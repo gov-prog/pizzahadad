@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פיצה בנימינה – דביר חדד</title>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;700;900&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF3E0;--smoke:#F7EFD8;
+  --tc:#C1440E;--tc-d:#8B2E06;--tc-l:#E8622A;
+  --char:#1A1208;--char2:#2E1F0A;
+  --gold:#D4A017;--muted:#6B5030;--border:#DDD0B0;
+  --green:#25D366;--green-d:#1aaf52;
+  --saving:#1aaf52;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--char);font-family:'Heebo',sans-serif;line-height:1.7;overflow-x:hidden;padding-bottom:110px;}
+
+/* ─── HERO ─── */
+.hero{position:relative;min-height:480px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:68px 20px 52px;overflow:hidden;}
+.hero-img{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1571066811602-716837d681de?w=1400&q=80');background-size:cover;background-position:center;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,18,8,.72) 0%,rgba(46,31,10,.88) 100%);}
+.hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse 65% 50% at 50% 100%,rgba(193,68,14,.5) 0%,transparent 65%);}
+.hero *{position:relative;z-index:1;}
+.eyebrow{font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
+.hero h1{font-family:'Frank Ruhl Libre',serif;font-size:clamp(46px,10vw,90px);font-weight:900;line-height:1;color:var(--cream);margin-bottom:6px;text-shadow:0 4px 24px rgba(0,0,0,.4);}
+.hero-sub{font-family:'Frank Ruhl Libre',serif;font-size:clamp(16px,3.5vw,26px);font-weight:300;color:rgba(250,243,224,.6);margin-bottom:22px;}
+.badges{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.bdg{border:1px solid rgba(212,160,23,.45);color:var(--gold);padding:4px 14px;border-radius:40px;font-size:11.5px;font-weight:500;}
+
+/* ─── QUALITIES ─── */
+.qbar{background:var(--char2);padding:28px 20px;}
+.qgrid{max-width:840px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;text-align:center;}
+.qi{padding:16px 12px;border:1px solid rgba(250,243,224,.1);border-radius:12px;transition:border-color .2s;}
+.qi:hover{border-color:rgba(212,160,23,.3);}
+.qi-icon{font-size:24px;margin-bottom:6px;}
+.qi-lbl{font-size:13px;font-weight:500;color:var(--cream);}
+.qi-sub{font-size:11px;color:rgba(250,243,224,.45);}
+
+/* ─── SECTION COMMON ─── */
+.menu-wrap{background:var(--smoke);padding:52px 20px;}
+.sec-title{font-family:'Frank Ruhl Libre',serif;font-size:32px;font-weight:700;color:var(--tc-d);text-align:center;margin-bottom:6px;}
+.sec-line{width:44px;height:3px;background:var(--tc);margin:0 auto 36px;border-radius:2px;}
+
+/* ─── CLASSIC CARD ─── */
+.classic-card{background:#fff;border:2px solid var(--tc);border-radius:20px;overflow:hidden;margin-bottom:44px;display:grid;grid-template-columns:1fr 1fr;position:relative;}
+.classic-card-img{width:100%;height:100%;min-height:220px;object-fit:cover;display:block;}
+.classic-card-body{padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;}
+.best-seller{display:inline-block;background:var(--tc);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.c-name{font-family:'Frank Ruhl Libre',serif;font-size:22px;font-weight:700;margin-bottom:6px;}
+.c-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:16px;}
+.c-pricing{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.big-price{font-family:'Frank Ruhl Libre',serif;font-size:32px;font-weight:700;color:var(--tc-d);line-height:1;}
+.big-price small{font-size:15px;font-weight:400;}
+.deal-tag{background:rgba(193,68,14,.1);border:1px solid rgba(193,68,14,.3);color:var(--tc-d);padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;}
+.c-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+
+/* ─── DEAL PROGRESS ─── */
+.deal-progress{background:rgba(193,68,14,.07);border:1px dashed rgba(193,68,14,.3);border-radius:12px;padding:10px 14px;margin-top:12px;font-size:12.5px;color:var(--tc-d);display:none;}
+.deal-progress.show{display:block;}
+.progress-bar-wrap{background:rgba(193,68,14,.12);border-radius:20px;height:6px;margin-top:6px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:var(--tc);border-radius:20px;transition:width .4s ease;}
+
+/* ─── SPECIAL CARDS ─── */
+.specials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-bottom:20px;}
+.sp-card{background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;position:relative;transition:transform .2s,box-shadow .2s;}
+.sp-card:hover{transform:translateY(-4px);box-shadow:0 10px 32px rgba(139,46,6,.12);}
+.sp-card.isnew::after{content:'חדש! 🔥';position:absolute;top:12px;right:12px;background:var(--gold);color:var(--char);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;}
+.sp-img{width:100%;height:160px;object-fit:cover;display:block;}
+.sp-body{padding:18px 16px;}
+.sp-name{font-family:'Frank Ruhl Libre',serif;font-size:20px;font-weight:700;margin-bottom:6px;}
+.sp-ing{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:14px;min-height:52px;}
+.sp-foot{display:flex;align-items:center;justify-content:space-between;}
+.sp-price{font-family:'Frank Ruhl Libre',serif;font-size:24px;font-weight:700;color:var(--tc-d);}
+
+/* Deal progress for specials */
+.specials-deal-bar{background:#fff;border:2px solid var(--tc);border-radius:14px;padding:14px 18px;margin-bottom:44px;}
+.sdb-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.sdb-text{font-size:15px;font-weight:700;color:var(--tc-d);}
+.sdb-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.specials-progress{background:rgba(193,68,14,.1);border-radius:20px;height:8px;margin-top:10px;overflow:hidden;}
+.specials-progress-fill{height:100%;background:var(--tc);border-radius:20px;transition:width .4s ease;}
+
+/* ─── TOPPINGS ─── */
+.top-box{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px 24px;}
+.top-title{font-family:'Frank Ruhl Libre',serif;font-size:18px;font-weight:700;margin-bottom:14px;}
+.top-list{display:flex;flex-wrap:wrap;gap:10px;}
+.top-item{display:flex;align-items:center;gap:8px;background:var(--smoke);border:1px solid var(--border);padding:7px 12px;border-radius:30px;font-size:13.5px;}
+.tp-price{font-size:11px;color:var(--muted);}
+
+/* ─── BUTTONS ─── */
+.add-btn{display:inline-flex;align-items:center;gap:5px;background:var(--tc);color:#fff;border:none;padding:9px 16px;border-radius:30px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;transition:background .15s,transform .1s;}
+.add-btn:hover{background:var(--tc-l);}
+.add-btn:active{transform:scale(.96);}
+.add-btn.sm{padding:6px 12px;font-size:12px;}
+.add-btn.gold{background:var(--gold);color:var(--char);}
+.add-btn.gold:hover{background:#c89010;}
+
+/* ─── QTY ─── */
+.qty-ctrl{display:flex;align-items:center;gap:10px;}
+.qty-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--tc);background:transparent;color:var(--tc);font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1;}
+.qty-btn:hover{background:var(--tc);color:#fff;}
+.qty-num{font-size:15px;font-weight:700;min-width:18px;text-align:center;}
+
+/* ─── CART BAR ─── */
+#cart-bar{position:fixed;bottom:0;left:0;right:0;background:var(--tc-d);color:#fff;padding:0 20px;height:68px;display:flex;align-items:center;justify-content:space-between;z-index:900;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+#cart-bar.visible{transform:translateY(0);}
+.bar-left{display:flex;align-items:center;gap:12px;}
+.bar-count{background:var(--gold);color:var(--char);font-size:12px;font-weight:700;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;}
+.bar-label{font-size:14px;font-weight:500;}
+.bar-total{font-family:'Frank Ruhl Libre',serif;font-size:22px;font-weight:700;}
+.bar-saving{font-size:11px;color:rgba(37,211,102,.85);margin-top:1px;}
+.bar-btn{background:var(--gold);color:var(--char);border:none;padding:10px 20px;border-radius:30px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;white-space:nowrap;}
+
+/* ─── CART DRAWER ─── */
+#cart-drawer{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;display:none;}
+#cart-overlay{position:absolute;inset:0;background:rgba(26,18,8,.55);}
+#cart-panel{position:absolute;left:0;top:0;bottom:0;width:min(420px,100vw);background:var(--cream);display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);overflow:hidden;}
+#cart-drawer.open #cart-panel{transform:translateX(0);}
+#cart-drawer.open{display:block;}
+.drawer-head{background:var(--char2);color:var(--cream);padding:20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.drawer-head h2{font-family:'Frank Ruhl Libre',serif;font-size:22px;font-weight:700;}
+.x-btn{background:rgba(250,243,224,.12);border:none;color:var(--cream);width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.x-btn:hover{background:rgba(250,243,224,.22);}
+.drawer-body{flex:1;overflow-y:auto;padding:16px 18px;}
+.empty-msg{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-icon{font-size:48px;margin-bottom:12px;}
+.cart-deal-banner{background:linear-gradient(135deg,rgba(26,175,82,.12),rgba(26,175,82,.06));border:1px solid rgba(26,175,82,.3);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:var(--saving);}
+.cart-deal-banner strong{font-size:14px;}
+.cart-item{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;}
+.ci-row1{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px;}
+.ci-name{font-weight:700;font-size:15px;}
+.ci-unit{font-size:11.5px;color:var(--muted);}
+.ci-unit-deal{font-size:11px;color:var(--saving);font-weight:600;}
+.ci-del{background:none;border:none;color:#ccc;font-size:18px;cursor:pointer;padding:0 2px;line-height:1;}
+.ci-del:hover{color:var(--tc);}
+.ci-row2{display:flex;align-items:center;justify-content:space-between;}
+.ci-total{font-family:'Frank Ruhl Libre',serif;font-size:18px;font-weight:700;color:var(--tc-d);}
+.ci-original{font-size:11px;color:#bbb;text-decoration:line-through;margin-right:4px;}
+.drawer-foot{padding:16px 18px;background:#fff;border-top:1px solid var(--border);flex-shrink:0;}
+.total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.total-lbl{font-size:14px;color:var(--muted);}
+.total-num{font-family:'Frank Ruhl Libre',serif;font-size:26px;font-weight:700;}
+.saving-row{text-align:left;font-size:12px;color:var(--saving);font-weight:600;margin-bottom:12px;min-height:18px;}
+.checkout-btn{width:100%;background:var(--tc);color:#fff;border:none;padding:14px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;transition:background .15s;}
+.checkout-btn:hover{background:var(--tc-l);}
+.checkout-btn:disabled{background:#ccc;cursor:not-allowed;}
+
+/* ─── CHECKOUT MODAL ─── */
+#co-modal{position:fixed;inset:0;z-index:2000;background:rgba(26,18,8,.6);display:none;align-items:flex-end;justify-content:center;}
+#co-modal.open{display:flex;}
+#co-box{background:var(--cream);width:min(460px,100vw);border-radius:24px 24px 0 0;max-height:90vh;overflow-y:auto;padding:28px 24px 40px;}
+.co-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.co-head h2{font-family:'Frank Ruhl Libre',serif;font-size:22px;font-weight:700;}
+.dots{display:flex;gap:6px;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border);}
+.dot.on{background:var(--tc);}
+.field{margin-bottom:18px;}
+.field label{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:6px;}
+.field input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:15px;font-family:'Heebo',sans-serif;background:#fff;outline:none;transition:border-color .15s;}
+.field input:focus{border-color:var(--tc);}
+.field input.err{border-color:var(--tc);}
+.tog-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.tog-opt{border:2px solid var(--border);border-radius:12px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .2s;user-select:none;}
+.tog-opt.sel{border-color:var(--tc);background:rgba(193,68,14,.06);}
+.tog-icon{font-size:26px;margin-bottom:6px;}
+.tog-title{font-size:14px;font-weight:700;}
+.tog-sub{font-size:11.5px;color:var(--muted);}
+.o-sum{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px;font-size:14px;}
+.o-row{display:flex;justify-content:space-between;padding:4px 0;}
+.o-row.saving{color:var(--saving);font-weight:600;}
+.o-divider{border:none;border-top:1px dashed var(--border);margin:8px 0;}
+.o-total{font-weight:700;font-size:16px;}
+.actions{display:flex;gap:10px;margin-top:8px;}
+.next-btn{flex:1;background:var(--tc);color:#fff;border:none;padding:13px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;transition:background .15s;}
+.next-btn:hover{background:var(--tc-l);}
+.next-btn.green{background:var(--green);}
+.next-btn.green:hover{background:var(--green-d);}
+.back-btn{background:none;border:1.5px solid var(--border);color:var(--muted);padding:12px 16px;border-radius:12px;font-size:14px;cursor:pointer;font-family:'Heebo',sans-serif;}
+.back-btn:hover{border-color:var(--tc);color:var(--tc);}
+
+/* ─── BIT POPUP ─── */
+#bit-pop{position:fixed;inset:0;z-index:3000;background:rgba(26,18,8,.7);display:none;align-items:center;justify-content:center;padding:20px;}
+#bit-pop.open{display:flex;}
+#bit-box{background:#fff;width:min(360px,100%);border-radius:20px;padding:32px 26px;text-align:center;}
+.bit-icon{font-size:52px;margin-bottom:10px;}
+.bit-title{font-family:'Frank Ruhl Libre',serif;font-size:24px;font-weight:700;margin-bottom:10px;}
+.bit-msg{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:16px;}
+.bit-num{font-size:22px;font-weight:700;color:var(--tc-d);letter-spacing:1px;direction:ltr;display:block;margin:8px 0 4px;}
+.bit-name{font-size:12px;color:var(--muted);margin-bottom:20px;}
+.bit-go{width:100%;background:var(--green);color:#fff;border:none;padding:14px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;margin-bottom:10px;}
+.bit-back{width:100%;background:none;border:1.5px solid var(--border);color:var(--muted);padding:11px;border-radius:12px;font-size:14px;cursor:pointer;font-family:'Heebo',sans-serif;}
+
+/* ─── REVEAL ─── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+footer{background:var(--char);color:rgba(250,243,224,.35);text-align:center;padding:22px;font-size:12.5px;}
+footer strong{color:rgba(250,243,224,.7);}
+
+@media(max-width:600px){
+  .classic-card{grid-template-columns:1fr;}
+  .classic-card-img{height:200px;}
+  #cart-panel{width:100vw;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-glow"></div>
+  <p class="eyebrow">בס"ד · פיצה אומן ביתית</p>
+  <h1>פיצה בנימינה</h1>
+  <p class="hero-sub">דביר חדד</p>
+  <div class="badges">
+    <span class="bdg">תנור אבן על אש גלויה</span>
+    <span class="bdg">בצק 400 גרם עבודת יד</span>
+    <span class="bdg">התפחה 48 שעות</span>
+  </div>
+  <div style="position:relative;font-size:28px;">🔥</div>
+</header>
+
+<!-- QUALITIES -->
+<div class="qbar">
+  <div class="qgrid">
+    <div class="qi reveal"><div class="qi-icon">🌾</div><div class="qi-lbl">קמח מיוחד לפיצה</div><div class="qi-sub">קמחים איכותיים במיוחד</div></div>
+    <div class="qi reveal"><div class="qi-icon">🧀</div><div class="qi-lbl">מוצרלה 100% איכותית</div><div class="qi-sub">גבינת מוצרלה אמיתית</div></div>
+    <div class="qi reveal"><div class="qi-icon">🍅</div><div class="qi-lbl">רוטב עגבניות ביתי</div><div class="qi-sub">אמיתי ומבושל בבית</div></div>
+    <div class="qi reveal"><div class="qi-icon">🫒</div><div class="qi-lbl">שמן זית בלבד</div><div class="qi-sub">ללא שמנים מזוקקים</div></div>
+  </div>
+</div>
+
+<!-- MENU -->
+<div class="menu-wrap">
+  <div style="max-width:880px;margin:0 auto;">
+    <h2 class="sec-title">התפריט</h2>
+    <div class="sec-line"></div>
+
+    <!-- CLASSIC -->
+    <div class="classic-card reveal">
+      <img class="classic-card-img"
+        src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=80"
+        alt="פיצה נאפוליטנית קלאסית"
+        onerror="this.style.display='none'">
+      <div class="classic-card-body">
+        <div>
+          <span class="best-seller">⭐ הכי נמכרת</span>
+          <div class="c-name">פיצה נאפוליטנית קלאסית</div>
+          <div class="c-desc">בצק 400 גרם עבודת יד, התפחה 48 שעות, אפייה בתנור אבן. רוטב עגבניות ביתי, מוצרלה איכותית ושמן זית.</div>
+          <div class="c-pricing">
+            <div class="big-price"><small>₪</small>45</div>
+            <div class="deal-tag">🔥 3 יחידות ב-₪100</div>
+          </div>
+          <!-- Deal progress -->
+          <div class="deal-progress" id="classic-progress">
+            <span id="classic-progress-txt"></span>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" id="classic-bar" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="c-btns">
+          <button class="add-btn" onclick="addClassic()">+ הוסף לעגלה</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPECIALS -->
+    <h3 style="font-family:'Frank Ruhl Libre',serif;font-size:24px;font-weight:700;color:var(--tc-d);text-align:center;margin-bottom:18px;">פיצות ספיישל מטורפות</h3>
+    <div class="specials-grid">
+      <div class="sp-card isnew reveal">
+        <img class="sp-img"
+          src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80"
+          alt="פיצה פסטו וקונפי"
+          onerror="this.style.background:'#f5f0e8';this.style.display='none'">
+        <div class="sp-body">
+          <div class="sp-name">🌿 פסטו וקונפי</div>
+          <div class="sp-ing">רוטב פסטו ביתי מבזיליקום טרי, קונפי שום בשמן זית, עגבניות שרי טריות וגבינת מוצרלה איכותית</div>
+          <div class="sp-foot"><div class="sp-price">₪50</div><button class="add-btn sm" onclick="addSpecial('פיצה פסטו וקונפי')">+ הוסף</button></div>
+        </div>
+      </div>
+      <div class="sp-card reveal">
+        <img class="sp-img"
+          src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&q=80"
+          alt="פיצה ביאנקה"
+          onerror="this.style.display='none'">
+        <div class="sp-body">
+          <div class="sp-name">🤍 ביאנקה</div>
+          <div class="sp-ing">פיצה לבנה — חמאת שום ביתית, רוטב בשמל עשיר וגבינת מוצרלה איכותית</div>
+          <div class="sp-foot"><div class="sp-price">₪50</div><button class="add-btn sm" onclick="addSpecial('פיצה ביאנקה')">+ הוסף</button></div>
+        </div>
+      </div>
+      <div class="sp-card reveal">
+        <img class="sp-img"
+          src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=80"
+          alt="פיצה בצל"
+          onerror="this.style.display='none'">
+        <div class="sp-body">
+          <div class="sp-name">🧅 בצל</div>
+          <div class="sp-ing">בצל מקורמל, בצל צלוי בטאבון ואיולי בצל ביתי מיוחד</div>
+          <div class="sp-foot"><div class="sp-price">₪50</div><button class="add-btn sm" onclick="addSpecial('פיצה בצל')">+ הוסף</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Specials deal bar -->
+    <div class="specials-deal-bar reveal">
+      <div class="sdb-inner">
+        <div>
+          <div class="sdb-text">🔥 מבצע — 2 ספיישל ב-₪90</div>
+          <div class="sdb-sub" id="specials-status-txt">הוסף 2 ספיישל וחסוך ₪10</div>
+        </div>
+      </div>
+      <div class="specials-progress">
+        <div class="specials-progress-fill" id="specials-bar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- TOPPINGS -->
+    <div class="top-box reveal">
+      <div class="top-title">🫙 תוספות לבחירה — ₪5 לכל תוספת</div>
+      <div class="top-list">
+        <div class="top-item">🫒 זיתים <span class="tp-price">₪5</span> <button class="add-btn sm" onclick="addTopping('תוספת זיתים')">+</button></div>
+        <div class="top-item">🌽 תירס <span class="tp-price">₪5</span> <button class="add-btn sm" onclick="addTopping('תוספת תירס')">+</button></div>
+        <div class="top-item">🧅 בצל <span class="tp-price">₪5</span> <button class="add-btn sm" onclick="addTopping('תוספת בצל')">+</button></div>
+        <div class="top-item">🍅 עגבניות <span class="tp-price">₪5</span> <button class="add-btn sm" onclick="addTopping('תוספת עגבניות')">+</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <strong>פיצה בנימינה — דביר חדד</strong><br>
+  בס"ד · אפייה בתנור אבן · עבודת יד · התפחה 48 שעות
+</footer>
+
+<!-- CART BAR -->
+<div id="cart-bar">
+  <div class="bar-left">
+    <div class="bar-count" id="bar-count">0</div>
+    <div>
+      <div class="bar-label">פריטים בעגלה</div>
+      <div class="bar-saving" id="bar-saving"></div>
+    </div>
+  </div>
+  <div class="bar-total" id="bar-total">₪0</div>
+  <button class="bar-btn" onclick="openCart()">לעגלה שלי ←</button>
+</div>
+
+<!-- CART DRAWER -->
+<div id="cart-drawer">
+  <div id="cart-overlay" onclick="closeCart()"></div>
+  <div id="cart-panel">
+    <div class="drawer-head">
+      <h2>🛒 העגלה שלי</h2>
+      <button class="x-btn" onclick="closeCart()">✕</button>
+    </div>
+    <div class="drawer-body" id="drawer-body"></div>
+    <div class="drawer-foot">
+      <div class="total-row">
+        <span class="total-lbl">סה"כ לתשלום</span>
+        <span class="total-num" id="drawer-total">₪0</span>
+      </div>
+      <div class="saving-row" id="drawer-saving"></div>
+      <button class="checkout-btn" id="co-btn" onclick="openCheckout()" disabled>להזמנה ←</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="co-modal">
+  <div id="co-box">
+    <div class="co-head">
+      <h2 id="co-title"></h2>
+      <div class="dots">
+        <div class="dot" id="dot1"></div>
+        <div class="dot" id="dot2"></div>
+        <div class="dot" id="dot3"></div>
+      </div>
+    </div>
+    <div id="co-body"></div>
+  </div>
+</div>
+
+<!-- BIT POPUP -->
+<div id="bit-pop">
+  <div id="bit-box">
+    <div class="bit-icon">💸</div>
+    <div class="bit-title">תשלום בביט</div>
+    <div class="bit-msg">
+      לאחר שליחת ההזמנה לוואטסאפ,<br>
+      <strong>אנא שלח/י צילום מסך של העברת הביט</strong><br>
+      לאישור ההזמנה 🙏
+    </div>
+    <span class="bit-num">054-984-3397</span>
+    <div class="bit-name">דביר חדד</div>
+    <button class="bit-go" id="bit-go">שלח הזמנה לוואטסאפ 💬</button>
+    <button class="bit-back" onclick="closeBit()">← חזור</button>
+  </div>
+</div>
+
+<script>
+const PHONE = '972549843397';
+const PICKUP_ADDR = 'הארז 23, בנימינה';
+
+// ─── CART DATA ───
+// Each item: { id, type:'classic'|'special'|'topping', name, basePrice, qty }
+let cart = [];
+let step = 1, orderType = '', address = '', custName = '', custPhone = '';
+
+// ─── SMART PRICING ENGINE ───
+function getClassicQty()  { const i = cart.find(x=>x.type==='classic'); return i?i.qty:0; }
+function getSpecialQty()  { return cart.filter(x=>x.type==='special').reduce((s,x)=>s+x.qty,0); }
+
+function calcSmartTotal() {
+  let total = 0;
+  // Classics: every 3 = ₪100, rest ₪45 each
+  const cq = getClassicQty();
+  total += Math.floor(cq/3)*100 + (cq%3)*45;
+  // Specials: every 2 = ₪90, rest ₪50 each
+  const sq = getSpecialQty();
+  total += Math.floor(sq/2)*90 + (sq%2)*50;
+  // Toppings
+  cart.filter(x=>x.type==='topping').forEach(x=>{ total += x.basePrice*x.qty; });
+  return total;
+}
+
+function calcFullPrice() {
+  const cq = getClassicQty();
+  const sq = getSpecialQty();
+  let full = cq*45 + sq*50;
+  cart.filter(x=>x.type==='topping').forEach(x=>{ full += x.basePrice*x.qty; });
+  return full;
+}
+
+function calcSaving() { return calcFullPrice() - calcSmartTotal(); }
+
+function cartCount() { return cart.reduce((s,i)=>s+i.qty,0); }
+
+// ─── ADD ITEMS ───
+function addClassic() {
+  let it = cart.find(x=>x.type==='classic');
+  if(it) it.qty++;
+  else cart.push({id:'classic',type:'classic',name:'פיצה נאפוליטנית קלאסית',basePrice:45,qty:1});
+  renderAll();
+  animBar();
+}
+
+function addSpecial(name) {
+  let it = cart.find(x=>x.name===name);
+  if(it) it.qty++;
+  else cart.push({id:'sp-'+name,type:'special',name,basePrice:50,qty:1});
+  renderAll();
+  animBar();
+}
+
+function addTopping(name) {
+  let it = cart.find(x=>x.name===name);
+  if(it) it.qty++;
+  else cart.push({id:'top-'+name,type:'topping',name,basePrice:5,qty:1});
+  renderAll();
+  animBar();
+}
+
+function removeItem(id) { cart = cart.filter(i=>i.id!==id); renderAll(); }
+
+function chgQty(id, d) {
+  const it = cart.find(i=>i.id===id);
+  if(!it) return;
+  it.qty += d;
+  if(it.qty<=0) cart = cart.filter(i=>i.id!==id);
+  renderAll();
+}
+
+// ─── RENDER ALL ───
+function renderAll() {
+  renderCartUI();
+  renderDealProgress();
+}
+
+function renderDealProgress() {
+  // Classic progress
+  const cq = getClassicQty();
+  const cEl = document.getElementById('classic-progress');
+  const cTxt = document.getElementById('classic-progress-txt');
+  const cBar = document.getElementById('classic-bar');
+  if(cq > 0) {
+    cEl.classList.add('show');
+    const inSet = cq % 3;
+    const sets = Math.floor(cq/3);
+    if(inSet===0 && sets>0) {
+      cTxt.textContent = `🎉 מבצע פעיל! ${sets} סט × ₪100`;
+    } else {
+      const need = 3 - inSet;
+      cTxt.textContent = `עוד ${need} פיצה${need>1?'ות':''} ותגיע למבצע 3 ב-₪100 🔥`;
+    }
+    cBar.style.width = ((inSet||3)/3*100)+'%';
+  } else {
+    cEl.classList.remove('show');
+  }
+
+  // Specials progress
+  const sq = getSpecialQty();
+  const sTxt = document.getElementById('specials-status-txt');
+  const sBar = document.getElementById('specials-bar');
+  if(sq===0) {
+    sTxt.textContent = 'הוסף 2 ספיישל וחסוך ₪10';
+    sBar.style.width = '0%';
+  } else {
+    const inSet = sq % 2;
+    const sets = Math.floor(sq/2);
+    if(inSet===0 && sets>0) {
+      sTxt.textContent = `🎉 מבצע פעיל! ${sets} זוג${sets>1?'ות':''} × ₪90`;
+      sBar.style.width = '100%';
+    } else {
+      sTxt.textContent = 'עוד ספיישל אחד ותגיע למבצע! 🔥';
+      sBar.style.width = '50%';
+    }
+  }
+}
+
+function renderCartUI() {
+  const total   = calcSmartTotal();
+  const saving  = calcSaving();
+  const cnt     = cartCount();
+
+  document.getElementById('bar-count').textContent = cnt;
+  document.getElementById('bar-total').textContent  = '₪'+total;
+  document.getElementById('bar-saving').textContent = saving>0 ? '✅ חסכת ₪'+saving : '';
+  document.getElementById('drawer-total').textContent = '₪'+total;
+  document.getElementById('drawer-saving').textContent = saving>0 ? '✅ חסכת ₪'+saving+' עם המבצעים!' : '';
+  document.getElementById('co-btn').disabled = cnt===0;
+  const bar = document.getElementById('cart-bar');
+  cnt>0 ? bar.classList.add('visible') : bar.classList.remove('visible');
+
+  const body = document.getElementById('drawer-body');
+  if(!cart.length) {
+    body.innerHTML='<div class="empty-msg"><div class="empty-icon">🍕</div><p>העגלה ריקה<br><small style="color:#bbb">הוסף פיצות מהתפריט</small></p></div>';
+    return;
+  }
+
+  // Deal banners
+  let banners = '';
+  const cq = getClassicQty(), sq = getSpecialQty();
+  if(Math.floor(cq/3)>0) banners += `<div class="cart-deal-banner">🔥 <strong>מבצע קלאסיות פעיל!</strong> ${Math.floor(cq/3)} × ₪100 (${(cq%3)>0?'ועוד '+(cq%3)+' ב-₪'+(cq%3*45):''})</div>`;
+  if(Math.floor(sq/2)>0) banners += `<div class="cart-deal-banner">🔥 <strong>מבצע ספיישל פעיל!</strong> ${Math.floor(sq/2)} × ₪90 (${(sq%2)>0?'ועוד '+(sq%2)+' ב-₪50':''})</div>`;
+
+  const items = cart.map(it => {
+    let displayPrice = it.basePrice * it.qty;
+    let dealNote = '';
+    if(it.type==='classic') {
+      const sets=Math.floor(it.qty/3), rem=it.qty%3;
+      displayPrice = sets*100+rem*45;
+      if(sets>0) dealNote=`<div class="ci-unit-deal">🔥 כולל מבצע</div>`;
+    }
+    if(it.type==='special') {
+      const sets=Math.floor(it.qty/2),rem=it.qty%2;
+      displayPrice = sets*90+rem*50;
+      if(sets>0) dealNote=`<div class="ci-unit-deal">🔥 כולל מבצע</div>`;
+    }
+    const origPrice = it.basePrice*it.qty;
+    const origShow  = (origPrice>displayPrice) ? `<span class="ci-original">₪${origPrice}</span>` : '';
+    return `
+      <div class="cart-item">
+        <div class="ci-row1">
+          <div>
+            <div class="ci-name">${it.name}</div>
+            <div class="ci-unit">₪${it.basePrice} ליחידה</div>
+            ${dealNote}
+          </div>
+          <button class="ci-del" onclick="removeItem('${it.id}')">✕</button>
+        </div>
+        <div class="ci-row2">
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="chgQty('${it.id}',-1)">−</button>
+            <span class="qty-num">${it.qty}</span>
+            <button class="qty-btn" onclick="chgQty('${it.id}',+1)">+</button>
+          </div>
+          <div class="ci-total">${origShow}₪${displayPrice}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  body.innerHTML = banners + items;
+}
+
+function animBar() {
+  const bar = document.getElementById('cart-bar');
+  bar.style.transform='translateY(0) scale(1.025)';
+  setTimeout(()=>{bar.style.transform='';},180);
+}
+
+// ─── CART DRAWER ───
+function openCart()  { const d=document.getElementById('cart-drawer');d.style.display='block';setTimeout(()=>d.classList.add('open'),10); }
+function closeCart() { const d=document.getElementById('cart-drawer');d.classList.remove('open');setTimeout(()=>d.style.display='none',360); }
+
+// ─── CHECKOUT ───
+function openCheckout() { closeCart(); step=1; renderStep(); document.getElementById('co-modal').classList.add('open'); }
+function closeCheckout() { document.getElementById('co-modal').classList.remove('open'); }
+
+function setDots(s) { for(let i=1;i<=3;i++) document.getElementById('dot'+i).className='dot'+(i===s?' on':''); }
+
+function renderStep() {
+  setDots(step);
+  const title = document.getElementById('co-title');
+  const body  = document.getElementById('co-body');
+
+  if(step===1) {
+    title.textContent='איך תרצה לקבל את ההזמנה?';
+    body.innerHTML=`
+      <div class="tog-row">
+        <div class="tog-opt${orderType==='pickup'?' sel':''}" onclick="selType('pickup')">
+          <div class="tog-icon">🚶</div>
+          <div class="tog-title">איסוף עצמי</div>
+          <div class="tog-sub">${PICKUP_ADDR}</div>
+        </div>
+        <div class="tog-opt${orderType==='delivery'?' sel':''}" onclick="selType('delivery')">
+          <div class="tog-icon">🛵</div>
+          <div class="tog-title">משלוח לבנימינה</div>
+          <div class="tog-sub">תוספת ₪10</div>
+        </div>
+      </div>
+      ${orderType==='delivery'?`<div class="field"><label>כתובת למשלוח</label><input id="addr" type="text" placeholder="רחוב, מספר בית, דירה..." value="${address}"></div>`:''}
+      <div class="actions">
+        <button class="next-btn" onclick="s1next()"${!orderType?' disabled':''}>המשך ←</button>
+        <button class="back-btn" onclick="closeCheckout()">ביטול</button>
+      </div>`;
+  }
+  else if(step===2) {
+    title.textContent='פרטים אישיים';
+    body.innerHTML=`
+      <div class="field"><label>שם מלא</label><input id="inp-name" type="text" placeholder="שמך המלא..." value="${custName}"></div>
+      <div class="field"><label>מספר טלפון</label><input id="inp-phone" type="tel" placeholder="05X-XXX-XXXX" value="${custPhone}"></div>
+      <div class="actions">
+        <button class="next-btn" onclick="s2next()">המשך ←</button>
+        <button class="back-btn" onclick="goBack()">→ חזור</button>
+      </div>`;
+  }
+  else if(step===3) {
+    const del   = orderType==='delivery' ? 10 : 0;
+    const smart = calcSmartTotal();
+    const full  = calcFullPrice();
+    const saved = full - smart;
+    const total = smart + del;
+    title.textContent='סיכום הזמנה';
+    const rows = cart.map(it=>{
+      let p=it.basePrice*it.qty;
+      if(it.type==='classic'){const s=Math.floor(it.qty/3),r=it.qty%3;p=s*100+r*45;}
+      if(it.type==='special'){const s=Math.floor(it.qty/2),r=it.qty%2;p=s*90+r*50;}
+      return `<div class="o-row"><span>${it.name} × ${it.qty}</span><span>₪${p}</span></div>`;
+    }).join('');
+    body.innerHTML=`
+      <div class="o-sum">
+        ${rows}
+        ${del?'<div class="o-row"><span>🛵 משלוח</span><span>₪10</span></div>':''}
+        ${saved>0?`<div class="o-row saving"><span>✅ חסכת במבצעים</span><span>-₪${saved}</span></div>`:''}
+        <hr class="o-divider">
+        <div class="o-row o-total"><span>סה"כ לתשלום</span><span>₪${total}</span></div>
+      </div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:14px;">
+        👤 ${custName} &nbsp;|&nbsp; 📞 ${custPhone}<br>
+        ${orderType==='delivery'?'🛵 משלוח: '+address:'🚶 איסוף עצמי: '+PICKUP_ADDR}
+      </div>
+      <div style="background:rgba(193,68,14,.08);border:1px solid rgba(193,68,14,.25);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--tc-d);margin-bottom:20px;">
+        💸 תשלום בביט ל <strong>054-984-3397</strong> (דביר חדד)
+      </div>
+      <div class="actions">
+        <button class="next-btn green" onclick="showBit()">שלח הזמנה 💬</button>
+        <button class="back-btn" onclick="goBack()">→ חזור</button>
+      </div>`;
+  }
+}
+
+function selType(t) { orderType=t; renderStep(); }
+
+function s1next() {
+  if(!orderType) return;
+  if(orderType==='delivery') {
+    const a=document.getElementById('addr');
+    if(!a||!a.value.trim()){if(a){a.classList.add('err');a.focus();}return;}
+    address=a.value.trim();
+  }
+  step=2; renderStep();
+}
+
+function s2next() {
+  const n=document.getElementById('inp-name'), p=document.getElementById('inp-phone');
+  let ok=true;
+  if(!n.value.trim()){n.classList.add('err');n.focus();ok=false;}
+  if(!p.value.trim()){p.classList.add('err');if(ok)p.focus();ok=false;}
+  if(!ok)return;
+  custName=n.value.trim(); custPhone=p.value.trim();
+  step=3; renderStep();
+}
+
+function goBack() { step--; if(step<1){closeCheckout();return;} renderStep(); }
+
+// ─── BIT / WHATSAPP ───
+function showBit() {
+  closeCheckout();
+  document.getElementById('bit-go').onclick=doSend;
+  document.getElementById('bit-pop').classList.add('open');
+}
+function closeBit() {
+  document.getElementById('bit-pop').classList.remove('open');
+  document.getElementById('co-modal').classList.add('open');
+  step=3; renderStep();
+}
+
+function doSend() {
+  const del   = orderType==='delivery' ? 10 : 0;
+  const smart = calcSmartTotal();
+  const full  = calcFullPrice();
+  const saved = full-smart;
+  const total = smart+del;
+  const lines=[
+    '🍕 *הזמנה חדשה — פיצה בנימינה*','',
+    '📋 *פרטי לקוח:*',
+    `👤 שם: ${custName}`,
+    `📞 טלפון: ${custPhone}`,
+    orderType==='delivery'?`🛵 כתובת: ${address}`:`🚶 איסוף עצמי: ${PICKUP_ADDR}`,
+    '','🛒 *פירוט הזמנה:*',
+    ...cart.map(it=>{
+      let p=it.basePrice*it.qty;
+      if(it.type==='classic'){const s=Math.floor(it.qty/3),r=it.qty%3;p=s*100+r*45;}
+      if(it.type==='special'){const s=Math.floor(it.qty/2),r=it.qty%2;p=s*90+r*50;}
+      return `• ${it.name} × ${it.qty} — ₪${p}`;
+    }),
+    ...(del?['• 🛵 משלוח — ₪10']:[]),
+    ...(saved>0?[`✅ חסכת: ₪${saved}`]:[]),
+    '',`💰 *סה"כ לתשלום: ₪${total}*`,'',
+    '💸 *תשלום בביט:* 054-984-3397 (דביר חדד)',
+    '📸 צילום מסך העברה ישלח בנפרד'
+  ];
+  document.getElementById('bit-pop').classList.remove('open');
+  window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(lines.join('\n'))}`, '_blank');
+}
+
+// ─── INIT ───
+renderAll();
+const obs = new IntersectionObserver(es=>es.forEach((e,i)=>{
+  if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*70);obs.unobserve(e.target);}
+}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
