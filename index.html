@@ -1344,8 +1344,8 @@ function goBack(){ step--; if(step<1){closeCheckout();return;} renderStep(); }
 /* ── BIT & SEND ── */
 function showBit(){
   closeCheckout();
-  document.getElementById('bit-pop').classList.add('open');
   document.getElementById('bit-go').onclick = doSend;
+  document.getElementById('bit-pop').classList.add('open');
 }
 function closeBit(){
   document.getElementById('bit-pop').classList.remove('open');
@@ -1355,68 +1355,42 @@ function closeBit(){
 
 async function doSend(){
   document.getElementById('bit-pop').classList.remove('open');
+  if(selectedDate&&selectedSlot) await bookSlot(selectedDate,selectedSlot);
 
   const del = orderType==='delivery'?10:0;
   const total = calcSmartTotal()+del;
   const dateObj = new Date(selectedDate+'T12:00:00');
   const hebrewDate = dateObj.toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'});
 
-  const sep = '━━━━━━━━━━━━━━━━━━━━';
-  const pizzaItems = cart.filter(x=>x.type==='classic'||x.type==='special');
-  const toppingItems = cart.filter(x=>x.type==='topping');
-
-  const itemLines = pizzaItems.map(it=>{
+  const itemLines = cart.map(it=>{
+    if(it.type==='topping') return `• ${it.name} × ${it.qty} — ₪${it.price*it.qty}`;
     const smart = it.type==='classic'
       ? (Math.floor(it.qty/3)*100+(it.qty%3)*45)
       : (Math.floor(it.qty/2)*90+(it.qty%2)*50);
-    const dealNote = (it.type==='classic'&&it.qty>=3) ? '\n    ↳ ✅ מבצע 3 ב-₪100'
-      : (it.type==='special'&&it.qty>=2) ? '\n    ↳ ✅ מבצע 2 ב-₪90' : '';
     const toppingNote = it.toppings&&it.toppings.length
-      ? '\n    ↳ תוספות: '+it.toppings.map(t=>t.icon+' '+t.name+(t.half!=='full'?' ('+halfLabel(t.half)+')':'')).join(', ')
+      ? '\n  תוספות: '+it.toppings.map(t=>t.icon+' '+t.name+(t.half!=='full'?' ('+halfLabel(t.half)+')':'')).join(', ')
       : '';
-    return `🍕 ${it.name} × ${it.qty}    ₪${smart}${dealNote}${toppingNote}`;
+    return `• ${it.name} × ${it.qty} — ₪${smart}${toppingNote}`;
   });
-
-  const payLines = pizzaItems.map(it=>{
-    const smart = it.type==='classic'
-      ? (Math.floor(it.qty/3)*100+(it.qty%3)*45)
-      : (Math.floor(it.qty/2)*90+(it.qty%2)*50);
-    return `${it.name} × ${it.qty}    ₪${smart}`;
-  });
-  toppingItems.forEach(it=>{ payLines.push(`${it.name} × ${it.qty}    ₪${it.price*it.qty}`); });
-  if(del) payLines.push(`🛵 משלוח    ₪10`);
 
   const lines=[
-    `🍕 *הזמנה חדשה — פיצה בנימינה*`, sep, ``,
-    `👤 *לקוח:* ${custName}`,
-    
-    `📞 *טלפון:* ${custPhone}`, ``,
-    
-    `📦 *סוג הזמנה:* ${orderType==='delivery'?'משלוח':'איסוף עצמי'}`,
-    
-    `📍 *כתובת:* ${orderType==='delivery'?address:PICKUP_ADDR}`, ``,
-    
-    `📅 *תאריך:* ${hebrewDate}`,
-    
-    `🕔 *שעה:* ${selectedSlot}`, ``,
-    
-    sep, `🛒 *פירוט ההזמנה:*`, ``,
-    ...itemLines, ``,
-    sep, `💰 *סיכום תשלום:*`, ``,
-    ...payLines,
-    `─────────────────────`,
-    `💵 *סה"כ לתשלום:*   *₪${total}*`, ``,
-    
-    sep, `💸 *תשלום בביט:*`,
-    `📱 054-984-3397 (דביר חדד)`,
-    `📸 יש לשלוח צילום מסך לאישור ✅`,
+    '🍕 *הזמנה — פיצה בנימינה*','',
+    `👤 ${custName}  |  📞 ${custPhone}`,
+    orderType==='delivery'?`🛵 משלוח: ${address}`:`🚶 איסוף: ${PICKUP_ADDR}`,
+    `📅 ${hebrewDate}  |  🕔 ${selectedSlot}`,
+    '',
+    ...itemLines,
+    ...(del?['• 🛵 משלוח — ₪10']:[] ),
+    '',
+    `💰 *סה"כ: ₪${total}*`,
+    '',
+    '💸 ביט: 054-984-3397 (דביר חדד)',
+    '📸 נא לשלוח צילום מסך לאחר העברה'
   ];
 
-  // ✅ פותחים וואטסאפ לפני ה-await כדי שהדפדפן לא יחסום
   const waUrl = `https://wa.me/${PHONE}?text=${encodeURIComponent(lines.join('\n'))}`;
   window.open(waUrl, '_blank');
-
-  // שומרים את השעה ב-Firebase אחרי
+}
 
 /* ═══════════════════════════════════════════
    EMBER PARTICLES
@@ -1453,4 +1427,3 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>
-
