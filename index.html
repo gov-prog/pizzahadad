@@ -1353,130 +1353,99 @@ function closeBit(){
   step=5; renderStep();
 }
 
-/* ═══════════════════════════════════════════
-   MAIN SEND FUNCTION (doSend)
-   ═══════════════════════════════════════════ */
-async function doSend() {
-    // סגירת מודל הביט אם פתוח
-    if(document.getElementById('bit-pop')) {
-        document.getElementById('bit-pop').classList.remove('open');
-    }
+async function doSend(){
+  document.getElementById('bit-pop').classList.remove('open');
 
-    // 1. הגדרת משתנים וחישובים (מוודא שהמשתנים קיימים בגלובל שלך)
-    const del = (typeof orderType !== 'undefined' && orderType === 'delivery') ? 10 : 0;
-    const total = (typeof calcSmartTotal === 'function' ? calcSmartTotal() : 0) + del;
+  const del = orderType==='delivery'?10:0;
+  const total = calcSmartTotal()+del;
+  const dateObj = new Date(selectedDate+'T12:00:00');
+  const hebrewDate = dateObj.toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'});
+
+  const sep = '━━━━━━━━━━━━━━━━━━━━';
+  const pizzaItems = cart.filter(x=>x.type==='classic'||x.type==='special');
+  const toppingItems = cart.filter(x=>x.type==='topping');
+
+  const itemLines = pizzaItems.map(it=>{
+    const smart = it.type==='classic'
+      ? (Math.floor(it.qty/3)*100+(it.qty%3)*45)
+      : (Math.floor(it.qty/2)*90+(it.qty%2)*50);
+    const dealNote = (it.type==='classic'&&it.qty>=3) ? '\n    ↳ ✅ מבצע 3 ב-₪100'
+      : (it.type==='special'&&it.qty>=2) ? '\n    ↳ ✅ מבצע 2 ב-₪90' : '';
+    const toppingNote = it.toppings&&it.toppings.length
+      ? '\n    ↳ תוספות: '+it.toppings.map(t=>t.icon+' '+t.name+(t.half!=='full'?' ('+halfLabel(t.half)+')':'')).join(', ')
+      : '';
+    return `🍕 ${it.name} × ${it.qty}    ₪${smart}${dealNote}${toppingNote}`;
+  });
+
+  const payLines = pizzaItems.map(it=>{
+    const smart = it.type==='classic'
+      ? (Math.floor(it.qty/3)*100+(it.qty%3)*45)
+      : (Math.floor(it.qty/2)*90+(it.qty%2)*50);
+    return `${it.name} × ${it.qty}    ₪${smart}`;
+  });
+  toppingItems.forEach(it=>{ payLines.push(`${it.name} × ${it.qty}    ₪${it.price*it.qty}`); });
+  if(del) payLines.push(`🛵 משלוח    ₪10`);
+
+  const lines=[
+    `🍕 *הזמנה חדשה — פיצה בנימינה*`, sep, ``,
+    `👤 *לקוח:* ${custName}`,
     
-    // טיפול בתאריך (SelectedDate חייב להיות מוגדר אצלך)
-    let hebrewDate = "";
-    try {
-        const dateObj = new Date(selectedDate + 'T12:00:00');
-        hebrewDate = dateObj.toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long' });
-    } catch(e) { hebrewDate = "לא נבחר תאריך"; }
-
-    const sep = '━━━━━━━━━━━━━━━━━━━━';
+    `📞 *טלפון:* ${custPhone}`, ``,
     
-    // סינון פריטים מהעגלה
-    const pizzaItems = cart.filter(x => x.type === 'classic' || x.type === 'special');
-    const toppingItems = cart.filter(x => x.type === 'topping');
+    `📦 *סוג הזמנה:* ${orderType==='delivery'?'משלוח':'איסוף עצמי'}`,
+    
+    `📍 *כתובת:* ${orderType==='delivery'?address:PICKUP_ADDR}`, ``,
+    
+    `📅 *תאריך:* ${hebrewDate}`,
+    
+    `🕔 *שעה:* ${selectedSlot}`, ``,
+    
+    sep, `🛒 *פירוט ההזמנה:*`, ``,
+    ...itemLines, ``,
+    sep, `💰 *סיכום תשלום:*`, ``,
+    ...payLines,
+    `─────────────────────`,
+    `💵 *סה"כ לתשלום:*   *₪${total}*`, ``,
+    
+    sep, `💸 *תשלום בביט:*`,
+    `📱 054-984-3397 (דביר חדד)`,
+    `📸 יש לשלוח צילום מסך לאישור ✅`,
+  ];
 
-    // בניית שורות הפירוט (כולל מבצעים)
-    const itemLines = pizzaItems.map(it => {
-        const smart = it.type === 'classic'
-            ? (Math.floor(it.qty / 3) * 100 + (it.qty % 3) * 45)
-            : (Math.floor(it.qty / 2) * 90 + (it.qty % 2) * 50);
-        
-        const dealNote = (it.type === 'classic' && it.qty >= 3) ? '\n    ↳ ✅ מבצע 3 ב-₪100'
-            : (it.type === 'special' && it.qty >= 2) ? '\n    ↳ ✅ מבצע 2 ב-₪90' : '';
-        
-        const toppingNote = it.toppings && it.toppings.length
-            ? '\n    ↳ תוספות: ' + it.toppings.map(t => t.icon + ' ' + t.name + (t.half !== 'full' ? ' (' + halfLabel(t.half) + ')' : '')).join(', ')
-            : '';
-        
-        return `🍕 ${it.name} × ${it.qty}    ₪${smart}${dealNote}${toppingNote}`;
-    });
-
-    const payLines = pizzaItems.map(it => {
-        const smart = it.type === 'classic'
-            ? (Math.floor(it.qty / 3) * 100 + (it.qty % 3) * 45)
-            : (Math.floor(it.qty / 2) * 90 + (it.qty % 2) * 50);
-        return `${it.name} × ${it.qty}    ₪${smart}`;
-    });
-
-    toppingItems.forEach(it => { payLines.push(`${it.name} × ${it.qty}    ₪${it.price * it.qty}`); });
-    if (del) payLines.push(`🛵 משלוח    ₪10`);
-
-    // בניית מערך השורות להודעה
-    const lines = [
-        `🍕 *הזמנה חדשה — פיצה בנימינה*`, sep, ``,
-        `👤 *לקוח:* ${typeof custName !== 'undefined' ? custName : 'לא צוין'}`,
-        `📞 *טלפון:* ${typeof custPhone !== 'undefined' ? custPhone : 'לא צוין'}`, ``,
-        `📦 *סוג הזמנה:* ${orderType === 'delivery' ? 'משלוח' : 'איסוף עצמי'}`,
-        `📍 *כתובת:* ${orderType === 'delivery' ? (typeof address !== 'undefined' ? address : 'לא צוין') : (typeof PICKUP_ADDR !== 'undefined' ? PICKUP_ADDR : 'החרש 1, בנימינה')}`, ``,
-        `📅 *תאריך:* ${hebrewDate}`,
-        `🕔 *שעה:* ${typeof selectedSlot !== 'undefined' ? selectedSlot : 'מיד'}`, ``,
-        sep, `🛒 *פירוט ההזמנה:*`, ``,
-        ...itemLines, ``,
-        sep, `💰 *סיכום תשלום:*`, ``,
-        ...payLines,
-        `─────────────────────`,
-        `💵 *סה"כ לתשלום:*   *₪${total}*`, ``,
-        sep, `💸 *תשלום בביט:*`,
-        `📱 054-984-3397 (דביר חדד)`,
-        `📸 יש לשלוח צילום מסך לאישור ✅`,
-    ];
-
-    // שליחה לווטסאפ
-    const PHONE = "972502324031"; // המספר של דביר
-    const waUrl = `https://wa.me/${PHONE}?text=${encodeURIComponent(lines.join('\n'))}`;
-    window.open(waUrl, '_blank');
-
-    // שמירה ב-Firebase (תיעוד)
-    if (window._firebaseReady) {
-        try {
-            await window._fsSetDoc(window._fsDoc(window._db, "orders", "order_" + Date.now()), {
-                customer: { name: custName, phone: custPhone },
-                items: cart,
-                total: total,
-                timestamp: new Date()
-            });
-        } catch (e) { console.error("Firebase Sync Error", e); }
-    }
-}
-
-// קישור פונקציית הסיום לפונקציית השליחה המפורטת
-window.finishOrder = doSend;
 
 /* ═══════════════════════════════════════════
-   EMBER PARTICLES (האנימציה שלך)
-   ═══════════════════════════════════════════ */
-(function initEmbers() {
-    const wrap = document.getElementById('embers');
-    if(!wrap) return;
-    for (let i = 0; i < 22; i++) {
-        const e = document.createElement('div');
-        e.className = 'ember';
-        const size = 1 + Math.random() * 3;
-        e.style.cssText = `
-      left:${Math.random() * 100}%;
+   EMBER PARTICLES
+═══════════════════════════════════════════ */
+(function initEmbers(){
+  const wrap=document.getElementById('embers');
+  for(let i=0;i<22;i++){
+    const e=document.createElement('div');
+    e.className='ember';
+    const size=1+Math.random()*3;
+    e.style.cssText=`
+      left:${Math.random()*100}%;
       width:${size}px;height:${size}px;
-      --dur:${5 + Math.random() * 8}s;
-      --del:${Math.random() * 6}s;
-      --drift:${(Math.random() - 0.5) * 80}px;
-      background:${Math.random() > .5 ? '#E05A20' : '#D4A017'};
+      --dur:${5+Math.random()*8}s;
+      --del:${Math.random()*6}s;
+      --drift:${(Math.random()-0.5)*80}px;
+      background:${Math.random()>.5?'#E05A20':'#D4A017'};
     `;
-        wrap.appendChild(e);
-    }
+    wrap.appendChild(e);
+  }
 })();
 
 /* ═══════════════════════════════════════════
-   INITIALIZATION & SCROLL REVEAL
-   ═══════════════════════════════════════════ */
-if(typeof renderAll === 'function') renderAll();
+   SCROLL REVEAL
+═══════════════════════════════════════════ */
+renderAll();
+const obs=new IntersectionObserver(es=>es.forEach((e,i)=>{
+  if(e.isIntersecting){
+    setTimeout(()=>e.target.classList.add('visible'),i*80);
+    obs.unobserve(e.target);
+  }
+}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
 
-const obs = new IntersectionObserver(es => es.forEach((e, i) => {
-    if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-        obs.unobserve(e.target);
-    }
-}), { threshold: .08 });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
