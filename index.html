@@ -1412,6 +1412,11 @@ async function doSend(){
     `📸 יש לשלוח צילום מסך לאישור ✅`,
   ];
 
+  // ✅ פותחים וואטסאפ לפני ה-await כדי שהדפדפן לא יחסום
+  const waUrl = `https://wa.me/${PHONE}?text=${encodeURIComponent(lines.join('\n'))}`;
+  window.open(waUrl, '_blank');
+
+  // שומרים את השעה ב-Firebase אחרי
 
 /* ═══════════════════════════════════════════
    EMBER PARTICLES
